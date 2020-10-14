@@ -74,7 +74,7 @@ namespace ProxySwitcher
             if (dialog.Proxy != "")
             {
                 proxyList.Items.Add(dialog.Proxy);
-                notifyIconContextMenu.Items.Insert(notifyIconContextMenu.Items.Count - 2, new ToolStripMenuItem(
+                notifyIconContextMenu.Items.Insert(notifyIconContextMenu.Items.Count - 1, new ToolStripMenuItem(
                     dialog.Proxy, null, (s, args) => SetProxyEvent((ToolStripMenuItem)s, dialog.Proxy, true)));
                 Properties.Settings.Default.ProxyList.Add(dialog.Proxy);
                 Properties.Settings.Default.Save();
