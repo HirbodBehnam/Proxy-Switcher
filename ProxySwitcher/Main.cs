@@ -48,7 +48,7 @@ namespace ProxySwitcher
             _defaultProxyHost = (string)Registry.GetValue(KeyName, "ProxyServer", "");
             _defaultProxyOverride = (string)Registry.GetValue(KeyName, "ProxyOverride", "");
             notifyIconContextMenu.Items.Insert(0,new ToolStripMenuItem("Default", null, (sender, args) 
-                => SetProxy(_defaultProxyHost, false, _defaultProxyOverride)));
+                => SetProxyEvent((ToolStripMenuItem)sender ,_defaultProxyHost, false, _defaultProxyOverride)));
             ((ToolStripMenuItem) notifyIconContextMenu.Items[0]).Checked = true;
             // Load settings
             var list = Properties.Settings.Default.ProxyList;
@@ -56,7 +56,7 @@ namespace ProxySwitcher
             {
                 proxyList.Items.Add(proxy);
                 notifyIconContextMenu.Items.Insert(notifyIconContextMenu.Items.Count - 1, new ToolStripMenuItem(proxy, null,
-                    (sender, args) => SetProxyEvent((ToolStripMenuItem)sender, proxy, true)));
+                    (sender, args) => SetProxyEvent((ToolStripMenuItem)sender, proxy, true, BypassRules)));
             }
         }
         private void Main_Load(object sender, EventArgs e)
@@ -75,7 +75,7 @@ namespace ProxySwitcher
             {
                 proxyList.Items.Add(dialog.Proxy);
                 notifyIconContextMenu.Items.Insert(notifyIconContextMenu.Items.Count - 1, new ToolStripMenuItem(
-                    dialog.Proxy, null, (s, args) => SetProxyEvent((ToolStripMenuItem)s, dialog.Proxy, true)));
+                    dialog.Proxy, null, (s, args) => SetProxyEvent((ToolStripMenuItem)s, dialog.Proxy, true, BypassRules)));
                 Properties.Settings.Default.ProxyList.Add(dialog.Proxy);
                 Properties.Settings.Default.Save();
             }
@@ -118,18 +118,20 @@ namespace ProxySwitcher
                 Hide();
             }
         }
+
         /// <summary>
         /// An event to handle the menu clicks and set the proxy and checkbox
         /// </summary>
         /// <param name="sender">The toolbar item</param>
         /// <param name="host">Proxy host and port</param>
         /// <param name="enabled">Should the proxy be enabled?</param>
-        private void SetProxyEvent(ToolStripMenuItem sender,  string host, bool enabled)
+        /// <param name="rules">Bypass rules</param>
+        private void SetProxyEvent(ToolStripMenuItem sender, string host, bool enabled, string rules)
         {
             foreach (ToolStripMenuItem item in notifyIconContextMenu.Items)
                 item.Checked = false;
             sender.Checked = true;
-            SetProxy(host, enabled, BypassRules);
+            SetProxy(host, enabled, rules);
         }
     }
 }
