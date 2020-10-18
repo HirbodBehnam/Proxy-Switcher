@@ -14,7 +14,7 @@ namespace ProxySwitcher
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var main = new Main();
-            if (args.Length > 1 && args[1] == "--taskbar")
+            if (args.Length > 0 && args[0] == "--taskbar")
                 main.noGuiStart = true;
             Application.Run(main);
         }

@@ -37,7 +37,9 @@ namespace ProxySwitcher
             InternetSetOption(IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
             InternetSetOption(IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
         }
-
+        /// <summary>
+        /// True when the gui must not be shown when starting the app
+        /// </summary>
         public bool noGuiStart;
         private readonly string _defaultProxyHost;
         private readonly string _defaultProxyOverride;
@@ -59,11 +61,8 @@ namespace ProxySwitcher
                     (sender, args) => SetProxyEvent((ToolStripMenuItem)sender, proxy, true, BypassRules)));
             }
         }
-        private void Main_Load(object sender, EventArgs e)
-        {
-            if(noGuiStart)
-                BeginInvoke(new MethodInvoker(Hide));
-        }
+        // https://stackoverflow.com/a/4210040/4213397
+        protected override void SetVisibleCore(bool value) => base.SetVisibleCore(!noGuiStart ? value : !noGuiStart);
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) =>
             Application.Exit();
 
