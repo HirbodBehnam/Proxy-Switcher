@@ -14,9 +14,15 @@ namespace ProxySwitcher
             InitializeComponent();
         }
 
-        private void addButton_Click(object sender, EventArgs e)
+        private void addButton_Click(object sender, EventArgs e) => Submit();
+        private void AddProxy_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!ushort.TryParse(proxyPort.Text, out ushort port))
+            if(e.KeyCode == Keys.Enter)
+                Submit();
+        }
+        private void Submit()
+        {
+            if (!ushort.TryParse(proxyPort.Text, out ushort _))
             {
                 MessageBox.Show("Cannot parse port number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -25,5 +31,6 @@ namespace ProxySwitcher
             Proxy = proxyHost.Text + ":" + proxyPort.Text;
             Close();
         }
+
     }
 }

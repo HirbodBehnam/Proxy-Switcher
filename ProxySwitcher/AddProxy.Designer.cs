@@ -88,9 +88,11 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.addButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Name = "AddProxy";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Proxy";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddProxy_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

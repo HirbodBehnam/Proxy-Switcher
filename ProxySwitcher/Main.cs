@@ -99,7 +99,12 @@ namespace ProxySwitcher
         private void Main_FormClosed(object sender, FormClosedEventArgs e) =>
             SetProxy(_defaultProxyHost, false, _defaultProxyOverride);
 
-        private void notifyIcon_DoubleClick(object sender, EventArgs e) => Show();
+        private void notifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            noGuiStart = false;
+            Show();
+            WindowState = FormWindowState.Normal;
+        } 
 
         private void Main_Resize(object sender, EventArgs e)
         {
@@ -130,6 +135,7 @@ namespace ProxySwitcher
             foreach (ToolStripMenuItem item in notifyIconContextMenu.Items)
                 item.Checked = false;
             sender.Checked = true;
+            notifyIcon.Text = $"Proxy Switcher ({(enabled ? host : "Default")})";
             SetProxy(host, enabled, rules);
         }
     }
