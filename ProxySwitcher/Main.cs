@@ -40,7 +40,7 @@ namespace ProxySwitcher
         /// <summary>
         /// True when the gui must not be shown when starting the app
         /// </summary>
-        public bool noGuiStart;
+        public bool NoGuiStart;
         private readonly string _defaultProxyHost;
         private readonly string _defaultProxyOverride;
         public Main()
@@ -62,7 +62,7 @@ namespace ProxySwitcher
             }
         }
         // https://stackoverflow.com/a/4210040/4213397
-        protected override void SetVisibleCore(bool value) => base.SetVisibleCore(!noGuiStart ? value : !noGuiStart);
+        protected override void SetVisibleCore(bool value) => base.SetVisibleCore(!NoGuiStart ? value : !NoGuiStart);
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) =>
             Application.Exit();
 
@@ -101,7 +101,7 @@ namespace ProxySwitcher
 
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
-            noGuiStart = false;
+            NoGuiStart = false;
             Show();
             WindowState = FormWindowState.Normal;
         } 
