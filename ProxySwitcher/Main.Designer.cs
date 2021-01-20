@@ -36,6 +36,7 @@
             this.proxyList = new System.Windows.Forms.ListBox();
             this.addButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
+            this.DisableProxyAtStartupCheckbox = new System.Windows.Forms.CheckBox();
             this.notifyIconContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,11 +90,23 @@
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
+            // DisableProxyAtStartupCheckbox
+            // 
+            this.DisableProxyAtStartupCheckbox.AutoSize = true;
+            this.DisableProxyAtStartupCheckbox.Location = new System.Drawing.Point(13, 315);
+            this.DisableProxyAtStartupCheckbox.Name = "DisableProxyAtStartupCheckbox";
+            this.DisableProxyAtStartupCheckbox.Size = new System.Drawing.Size(171, 17);
+            this.DisableProxyAtStartupCheckbox.TabIndex = 3;
+            this.DisableProxyAtStartupCheckbox.Text = "Disable system proxy at startup";
+            this.DisableProxyAtStartupCheckbox.UseVisualStyleBackColor = true;
+            this.DisableProxyAtStartupCheckbox.CheckedChanged += new System.EventHandler(this.DisableProxyAtStartupCheckbox_CheckedChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(271, 316);
+            this.ClientSize = new System.Drawing.Size(271, 349);
+            this.Controls.Add(this.DisableProxyAtStartupCheckbox);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.addButton);
             this.Controls.Add(this.proxyList);
@@ -106,6 +119,7 @@
             this.Resize += new System.EventHandler(this.Main_Resize);
             this.notifyIconContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -117,6 +131,7 @@
         private System.Windows.Forms.ListBox proxyList;
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.Button deleteButton;
+        private System.Windows.Forms.CheckBox DisableProxyAtStartupCheckbox;
     }
 }
 

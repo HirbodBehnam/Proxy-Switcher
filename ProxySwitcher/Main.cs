@@ -41,17 +41,37 @@ namespace ProxySwitcher
         /// True when the gui must not be shown when starting the app
         /// </summary>
         public bool NoGuiStart;
+        /// <summary>
+        /// The proxy of system when the application has started
+        /// </summary>
         private readonly string _defaultProxyHost;
+        /// <summary>
+        /// The bypass rules when the application has started
+        /// </summary>
         private readonly string _defaultProxyOverride;
+        /// <summary>
+        /// Is the proxy on when the application has started?
+        /// </summary>
+        private readonly bool _defaultProxyIsOn;
         public Main()
         {
             InitializeComponent();
             // Get default proxy settings
             _defaultProxyHost = (string)Registry.GetValue(KeyName, "ProxyServer", "");
             _defaultProxyOverride = (string)Registry.GetValue(KeyName, "ProxyOverride", "");
-            notifyIconContextMenu.Items.Insert(0,new ToolStripMenuItem("Default", null, (sender, args) 
-                => SetProxyEvent((ToolStripMenuItem)sender ,_defaultProxyHost, false, _defaultProxyOverride)));
-            ((ToolStripMenuItem) notifyIconContextMenu.Items[0]).Checked = true;
+            _defaultProxyIsOn = (int)Registry.GetValue(KeyName, "ProxyEnable", 0) == 1;
+            // Add default buttons
+            notifyIconContextMenu.Items.Insert(0, new ToolStripMenuItem("Default Off", null, (sender, args)
+                => SetProxyEvent((ToolStripMenuItem)sender, _defaultProxyHost, false, _defaultProxyOverride)));
+            notifyIconContextMenu.Items.Insert(1,new ToolStripMenuItem("Default On", null, (sender, args) 
+                => SetProxyEvent((ToolStripMenuItem)sender ,_defaultProxyHost, true, _defaultProxyOverride)));
+            // Disable proxy on startup
+            if (Properties.Settings.Default.DisableProxyOnStartup)
+                SetProxy(_defaultProxyHost, false, _defaultProxyOverride);
+            // Check the first or second button
+            ((ToolStripMenuItem)notifyIconContextMenu.Items[_defaultProxyIsOn || Properties.Settings.Default.DisableProxyOnStartup ? 1 : 0])
+                .Checked = true;
+            notifyIconContextMenu.Items.Insert(2, new ToolStripSeparator());
             // Load settings
             var list = Properties.Settings.Default.ProxyList;
             foreach (string proxy in list)
@@ -97,7 +117,7 @@ namespace ProxySwitcher
         }
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e) =>
-            SetProxy(_defaultProxyHost, false, _defaultProxyOverride);
+            SetProxy(_defaultProxyHost, _defaultProxyIsOn, _defaultProxyOverride);
 
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
@@ -132,11 +152,18 @@ namespace ProxySwitcher
         /// <param name="rules">Bypass rules</param>
         private void SetProxyEvent(ToolStripMenuItem sender, string host, bool enabled, string rules)
         {
-            foreach (ToolStripMenuItem item in notifyIconContextMenu.Items)
-                item.Checked = false;
+            foreach (var item in notifyIconContextMenu.Items)
+                if(item is ToolStripMenuItem menuItem)
+                    menuItem.Checked = false;
             sender.Checked = true;
-            notifyIcon.Text = $"Proxy Switcher ({(enabled ? host : "Default")})";
+            notifyIcon.Text = $"Proxy Switcher ({(enabled ? host : "Off")})";
             SetProxy(host, enabled, rules);
+        }
+
+        private void DisableProxyAtStartupCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.DisableProxyOnStartup = DisableProxyAtStartupCheckbox.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }
