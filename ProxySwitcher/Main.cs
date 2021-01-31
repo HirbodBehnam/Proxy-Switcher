@@ -112,9 +112,10 @@ namespace ProxySwitcher
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (res == DialogResult.Yes)
                 {
-                    proxyList.Items.RemoveAt(proxyList.SelectedIndex);
-                    notifyIconContextMenu.Items.RemoveAt(proxyList.SelectedIndex + 1); // +1 is because of default value at top
-                    Properties.Settings.Default.ProxyList.RemoveAt(proxyList.SelectedIndex);
+                    int index = proxyList.SelectedIndex;
+                    proxyList.Items.RemoveAt(index);
+                    notifyIconContextMenu.Items.RemoveAt(index + 3); // +3 is because of default values at top
+                    Properties.Settings.Default.ProxyList.RemoveAt(index);
                     Properties.Settings.Default.Save();
                 }
             }
