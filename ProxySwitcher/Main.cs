@@ -67,7 +67,10 @@ namespace ProxySwitcher
                 => SetProxyEvent((ToolStripMenuItem)sender ,_defaultProxyHost, true, _defaultProxyOverride)));
             // Disable proxy on startup
             if (Properties.Settings.Default.DisableProxyOnStartup)
+            {
                 SetProxy(_defaultProxyHost, false, _defaultProxyOverride);
+                DisableProxyAtStartupCheckbox.Checked = true;
+            }
             // Check the first or second button
             ((ToolStripMenuItem)notifyIconContextMenu.Items[_defaultProxyIsOn || Properties.Settings.Default.DisableProxyOnStartup ? 1 : 0])
                 .Checked = true;
