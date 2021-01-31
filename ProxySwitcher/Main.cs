@@ -72,8 +72,9 @@ namespace ProxySwitcher
                 DisableProxyAtStartupCheckbox.Checked = true;
             }
             // Check the first or second button
-            ((ToolStripMenuItem)notifyIconContextMenu.Items[_defaultProxyIsOn || Properties.Settings.Default.DisableProxyOnStartup ? 1 : 0])
+            ((ToolStripMenuItem)notifyIconContextMenu.Items[!_defaultProxyIsOn || Properties.Settings.Default.DisableProxyOnStartup ? 0 : 1])
                 .Checked = true;
+            notifyIcon.Text = $"Proxy Switcher ({(!_defaultProxyIsOn || Properties.Settings.Default.DisableProxyOnStartup ? "Off" : "Default")})";
             notifyIconContextMenu.Items.Insert(2, new ToolStripSeparator());
             // Load settings
             var list = Properties.Settings.Default.ProxyList;
